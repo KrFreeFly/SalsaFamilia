@@ -40,6 +40,6 @@ app.use("/analytics", analyticsRouter);
 app.use("/", homeRouter);
 
 //слушаем порт
-app.listen(3000, function(){
+app.listen(process.env.PORT || 3000, function(){
     console.log("Сервер ожидает подключения...");
 });
