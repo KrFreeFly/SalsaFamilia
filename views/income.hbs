@@ -1,0 +1,51 @@
+<h1>{{title}}</h1>
+<p><a href="/income/types"><button>Типы доходов</button></a></p>
+
+<form method="post">
+    <table class="table">
+        <tr><th>Тип дохода</th><th>Дата</th><th>Сумма</th><th>Комментарий</th><th></th></tr>
+        {{#each income}}
+            <tr>
+                <td>{{this.Type}}</td>
+                <td>{{this.Date}}</td>
+                <td>{{this.Sum}}</td>
+                <td>{{this.Info}}</td>
+                <td><button formaction="/income/delete{{this.idIncome}}">Удалить</button><button formaction="/income/{{this.idIncome}}">Редактировать</button></td>
+            </tr>
+        {{/each}}
+        <tr>
+            <td>
+                <select id="Type">
+                    <option id="plHolderType">Выберите тип</option>
+                    {{#each types}}
+                        <option value="{{this.idIncomeTypes}}">{{this.Type}}</option>
+                    {{/each}}
+                </select><br><br>
+            </td>
+            <td><input id="Date" class="field" placeholder="Дата" type="date"></td>
+            <td><input id="Sum" class="field" placeholder="Сумма"></td>
+            <td><input id="Info" class="field" placeholder="Комментарий"></td>
+            <td><button formaction="javascript: newIncome()">Создать</button></td>
+        </tr>
+    </table>
+</form>
+
+<script type="text/javascript">
+    function newIncome() {
+        let type = document.getElementById('Type');
+        let date = document.getElementById('Date');
+        let sum = document.getElementById('Sum');
+        let info = document.getElementById('Info');
+        document.location.href = `/income/create?type=${type.value}&date=${date.value}&sum=${sum.value}&info=${info.value}`;
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(event) {
+        let selectType = document.getElementById("Type");
+        let optPlHolderType  = document.getElementById("plHolderType");
+        selectType.addEventListener("change", function(changeEvent) {
+            optPlHolderType.hidden = true;
+        });
+    });
+</script>

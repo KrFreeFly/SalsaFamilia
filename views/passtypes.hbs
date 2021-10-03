@@ -1,0 +1,33 @@
+<h1>{{title}}</h1>
+
+<form>
+<table class="table">
+    <tr><th>Тип абонемента</th><th>Количество занятий</th><th>Длительность, недель</th><th>Стоимость</th><th></th></tr>
+    {{#each passtypes}}
+        <tr>
+            <td>{{this.Type}}</td>
+            <td>{{this.Amount}}</td>
+            <td>{{this.Week}}</td>
+            <td>{{this.Cost}}</td>
+            <td><button formaction="/passtypes/delete{{this.idPassType}}">Удалить</button><button formaction="/passtypes/{{this.idPassType}}">Редактировать</button></td>
+        </tr>
+    {{/each}}
+        <tr>
+            <td><input id="Type" class="field" placeholder="Тип"></td>
+            <td><input id="Amount" class="field" placeholder="Количество"></td>
+            <td><input id="Week" class="field" placeholder="Длительность"></td>
+            <td><input id="Cost" class="field" placeholder="Стоимость"></td>
+            <td><button formaction="javascript: newType()">Создать</button></td>
+        </tr>
+</table>
+</form>
+
+<script type="text/javascript">
+    function newType() {
+        let type = document.getElementById('Type');
+        let amount = document.getElementById('Amount');
+        let week = document.getElementById('Week');
+        let cost = document.getElementById('Cost');
+        document.location.href = `/passtypes/create?type=${type.value}&amount=${amount.value}&week=${week.value}&cost=${cost.value}`;
+    }
+</script>

@@ -1,0 +1,40 @@
+<h1>{{title}}</h1>
+<form id="client" method="POST" autocomplete="off">
+    <input name="id" class="field" value="{{client.idClients}}" hidden="true"/>
+    <label>Фамилия</label><br>
+    <input name="surname" class="field" value="{{client.Surname}}"/><br><br>
+    <label>Имя</label><br>
+    <input name="name" class="field" value="{{client.Name}}" autocomplete="off"/><br><br>
+    <label>Телефон в формате 9991235678</label><br>
+    <input name="cellphone" type="tel" placeholder="(999) 123-56-78"  class="field" value="{{client.Cellphone}}"/><br><br>
+    <label>ВКонтакте</label><br>
+    <input name="vk" type="tel" class="field" value="{{client.VK}}"/><br><br>
+    <label>Инстаграм</label><br>
+    <input name="insta" class="field" value="{{client.Insta}}"/><br><br>
+    <label>Комментарий</label><br>
+    <input name="info" class="field" value="{{client.Info}}"/><br><br>
+    <button type="submit" formaction={{button1.action}}>{{button1.name}}</button><button type="submit" formaction={{button2.action}}>{{button2.name}}</button>
+</form><br>
+{{#if showpasses}}
+<table class="table">
+    <thead>
+    <tr>
+        <th colspan="4">Абонементы клиента <button form="client" formaction="/passes/newpass">Новый абонемент</button></th>
+    </tr>
+    </thead>
+    <tr>
+        <th>Номер абонемента</th>
+        <th>Начало</th>
+        <th>Окончание</th>
+        <th>Остаток</th>
+    </tr>
+    {{#each passes}}
+    <tr>
+        <td><a href="/passes/{{this.idPasses}}">{{this.idPasses}}</a></td>
+        <td>{{this.DateStart}}</td>
+        <td>{{this.DateEnd}}</td>
+        <td>{{this.ClassesLeft}}</td>
+    </tr>
+    {{/each}}
+</table>
+{{/if}}

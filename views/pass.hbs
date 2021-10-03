@@ -1,0 +1,46 @@
+<h1>{{title}}</h1>
+<form id="passcreate" method="POST" autocomplete="off">
+    <label>Клиент</label><br>
+    <select id="idClient" name="idClient">
+        {{#if client}}
+            <option id="plHolderClient" value="{{client.id}}">{{client.surname}} {{client.name}}</option>
+        {{else}}
+            <option id="plHolderClient">Выберите клиента</option>
+        {{/if}}
+        {{#each clients}}
+            <option value="{{this.idClients}}">{{this.Surname}} {{this.Name}}</option>
+        {{/each}}
+    </select><br><br>
+    <label>Тип абонемента</label><br>
+    <select id="idPassType" name="idPassType">
+        <option id="plHolderPass">Выберите тип абонемента</option>
+        {{#each passtypes}}
+            <option value="{{this.idPassType}}">{{this.Type}}</option>
+        {{/each}}
+    </select><br><br>
+    <label>Дата начала</label><br>
+    <input id="startDate" type="date" name="startDate" class="field" value="{{passtype.Cost}}"/><br><br>
+    <button type="submit" formaction={{button1.action}}>{{button1.name}}</button><button type="submit" formaction={{button2.action}}>{{button2.name}}</button>
+</form>
+
+<!-- убираем плейсхолдер при выборе чего-то из списка типов абонементов-->
+<script>
+    document.addEventListener('DOMContentLoaded', function(event) {
+        let selectList = document.getElementById("idPassType");
+        let optPlHolderPass  = document.getElementById("plHolderPass");
+        selectList.addEventListener("change", function(changeEvent) {
+            optPlHolderPass.hidden = true;
+        });
+    });
+</script>
+
+<!-- убираем плейсхолдер при выборе кого-то из списка клиентов-->
+<script>
+    document.addEventListener('DOMContentLoaded', function(event) {
+        let selectClient = document.getElementById("idClient");
+        let optPlHolderClient  = document.getElementById("plHolderClient");
+        selectClient.addEventListener("change", function(changeEvent) {
+            optPlHolderClient.hidden = true;
+        });
+    });
+</script>

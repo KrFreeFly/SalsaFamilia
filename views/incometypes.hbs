@@ -1,0 +1,24 @@
+<h1>{{title}}</h1>
+
+<form>
+    <table class="table">
+        <tr><th>Тип дохода</th><th></th></tr>
+        {{#each types}}
+            <tr>
+                <td>{{this.Type}}</td>
+                <td><button formaction="/income/types/delete{{this.idIncomeTypes}}">Удалить</button><button formaction="/income/types/{{this.idIncomeTypes}}">Редактировать</button></td>
+            </tr>
+        {{/each}}
+        <tr>
+            <td><input id="Type" class="field" placeholder="Тип дохода"></td>
+            <td><button formaction="javascript: newType()">Создать</button></td>
+        </tr>
+    </table>
+</form>
+
+<script type="text/javascript">
+    function newType() {
+        let type = document.getElementById('Type');
+        document.location.href = `/income/types/create?type=${type.value}`;
+    }
+</script>

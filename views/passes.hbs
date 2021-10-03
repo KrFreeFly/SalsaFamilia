@@ -1,0 +1,25 @@
+<h1>{{title}}</h1>
+<p><a href="/passes/newpass"><button>Добавить абонемент</button></a><a href="/passtypes"><button>Типы абонементов</button></a></p>
+
+<table class="table">
+    <tr>
+        <th>Номер абонемента</th>
+        <th>Клиент</th>
+        <th>Тип абонемента</th>
+        <th>Дата начала</th>
+        <th>Дата окончания</th>
+        <th>Осталось занятий</th>
+        <th>Стоимость</th>
+    </tr>
+    {{#each passes}}
+        <tr>
+            <td><a href="/passes/{{this.idPasses}}">{{this.idPasses}}</a></td>
+            <td><a href="/clients/{{this.ID_Client}}">{{this.Surname}} {{this.Name}}</a></td>
+            <td>{{this.Passtype}}</td>
+            <td>{{this.DateStart}}</td>
+            <td>{{this.DateEnd}}</td>
+            <td>{{this.ClassesLeft}}</td>
+            <td>{{this.Cost}}</td>
+        </tr>
+    {{/each}}
+</table>
