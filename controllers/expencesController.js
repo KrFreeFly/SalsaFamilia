@@ -1,18 +1,10 @@
 //подгружаем драйвер mySQL
 const mysql = require("mysql2");
 
-//подгружаем вспомогательные функции
+//подгружаем вспомогательные функции и переменные
 const functions = require("../public/javascripts/functions.js");
 const query = functions.query;
-
-//создаем пул подключений к базе данных
-const pool = mysql.createPool({
-    connectionLimit: 5,
-    host: "sql11.freemysqlhosting.net",
-    user: "sql11440439",
-    database: "sql11440439",
-    password: "9XLN1AfatB"
-});
+const pool = functions.pool;
 
 exports.getExpences = function (request, response) {
     let query1 = query('SELECT * FROM expences');
