@@ -10,18 +10,8 @@ const pool = mysql.createPool({
     password: "9XLN1AfatB"
 });
 
-//создаем промис для запросов
-const query = function (sqlQuery, arg) {
-    return new Promise(function (resolve, reject) {
-        pool.query(sqlQuery, arg, function (err, result) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(result);
-            }
-        });
-    });
-};
+//подгружаем промис для запросов
+import {query} from '../public/javascripts/functions.js';
 
 exports.getAnalytics = function (request, response) {
     response.render("analytics.hbs", {
