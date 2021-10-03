@@ -3,9 +3,7 @@ const mysql = require("mysql2");
 
 //подгружаем вспомогательные функции
 const functions = require("../public/javascripts/functions.js");
-
-//подгружаем промис для запросов
-import {query} from '../public/javascripts/functions.js';
+const query = functions.query;
 
 //создаем пул подключений к базе данных
 const pool = mysql.createPool({
