@@ -3,10 +3,14 @@ exports.transformDate = function (rawDate) {
     return `${correctDate.getDate()}.${correctDate.getMonth()+1}.${correctDate.getFullYear()}`
 }
 
-/*export const pool = mysql.createPool({
-    connectionLimit: 5,
-    host: 'localhost',
-    user: 'root',
-    database: 'salsafamilia',
-    password: '4815162342'
-});*/
+export let query = function (sqlQuery, arg) {
+    return new Promise(function (resolve, reject) {
+        pool.query(sqlQuery, arg, function (err, result) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};

@@ -4,6 +4,8 @@ const mysql = require("mysql2");
 //подгружаем вспомогательные функции
 const functions = require("../public/javascripts/functions.js");
 
+import {query} from '../public/javascripts/functions.js';
+
 //создаем пул подключений к базе данных
 const pool = mysql.createPool({
     connectionLimit: 5,
@@ -13,7 +15,7 @@ const pool = mysql.createPool({
     password: "9XLN1AfatB"
 });
 
-//создаем промис для запросов
+/*//создаем промис для запросов
 const query = function (sqlQuery, arg) {
     return new Promise(function (resolve, reject) {
         pool.query(sqlQuery, arg, function (err, result) {
@@ -25,7 +27,7 @@ const query = function (sqlQuery, arg) {
         });
     });
 };
-
+*/
 exports.getIncome = function (require, response) {
     const query1 = query('SELECT * FROM income');
     const query2 = query('SELECT * FROM incometypes');
