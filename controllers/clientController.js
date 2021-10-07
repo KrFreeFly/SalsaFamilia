@@ -1,9 +1,11 @@
 //подгружаем драйвер PostgreSQL
 const { Pool } = require('pg');
+const model = require('../models/salsafamilia.js')
 
 //подгружаем вспомогательные функции
 const functions = require("../public/javascripts/functions.js");
 const query = functions.query;
+const transformData = functions.transformData;
 
 //создаем пул подключений к базе данных
 const pool = new Pool({
@@ -17,6 +19,17 @@ const pool = new Pool({
     },
 });
 
+exports.getClients = async function(request, response) {
+    let clients = await model.client.findAll({
+        order: [['Surname', 'ASC']],
+    });
+    clients = transformData(clients);
+    console.log(clients);
+    response.render('clients', {
+        clients
+    });
+}
+/*
 //возврат формы списка клиентов
 exports.getClients = function(request, response) {
     pool.query('SELECT * FROM clients ORDER BY "Surname"', function(err, data) {
@@ -31,6 +44,8 @@ exports.getClients = function(request, response) {
         }
     });
 };
+*/
+
 
 //возврат пустой карты клиента
 exports.newClient = function(request, response) {
