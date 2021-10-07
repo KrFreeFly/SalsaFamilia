@@ -1,6 +1,4 @@
-//подгружаем драйвер mySQL
-const mysql = require("mysql2");
-
+//подгружаем драйвер PostgreSQL
 const { Pool } = require('pg');
 
 //подгружаем вспомогательные функции
@@ -60,7 +58,7 @@ exports.createClient = function (request, response) {
     const vk = request.body.vk;
     const insta = request.body.insta;
     const info = request.body.info;
-    pool.query("INSERT INTO clients (Name, Surname, Cellphone, VK, Insta, Info) VALUES (?,?,?,?,?,?)", [name, surname, cellphone, vk, insta, info], function(err, data) {
+    pool.query('INSERT INTO clients (Name, Surname, Cellphone, VK, Insta, Info) VALUES (?,?,?,?,?,?)', [name, surname, cellphone, vk, insta, info], function(err, data) {
         if(err) {
             console.log(err);
             return response.redirect("back");
@@ -74,23 +72,26 @@ exports.createClient = function (request, response) {
 exports.clientsFilter = function (request, response) {
     if (!request.body) return response.sendStatus(400);
     const surname = request.body.filterSurname;
-    pool.query("SELECT * FROM clients WHERE Surname = (?)", [surname], function (err, data) {
-        if (err) return console.log('filter' + err);
-        response.render("clients.hbs", {
-            clients: data,
-            title: "Список клиентов",
-        });
+    pool.query('SELECT * FROM clients WHERE "Surname" = $1', [surname], function (err, data) {
+        if (err) {
+            console.log(err);
+        } else {
+            response.render("clients.hbs", {
+                clients: data.rows,
+                title: "Список клиентов",
+            });
+        }
     });
 };
 
 //возврат карточки клиента по ID
 exports.getClientcard = function (request, response) {
     const id = request.params.idClients;
-    const query1 = query("SELECT * FROM clients WHERE idClients = (?)", [id]);
-    const query2 = query("SELECT idPasses, DateStart, DateEnd, ClassesLeft FROM passes WHERE ID_Client=? ORDER BY DateStart", [id]);
-    Promise.all([query1, query2]).then(function (result) {
-        let client = JSON.parse(JSON.stringify(result[0][0]));
-        let passes = Array.from(JSON.parse(JSON.stringify(result[1])));
+    const query1 = query('SELECT * FROM clients WHERE "idClients" = $1', [id]);
+    const query2 = query('SELECT "idPasses", "DateStart", "DateEnd", "ClassesLeft" FROM passes WHERE "ID_Clients" = $1 ORDER BY "DateStart"', [id]);
+    Promise.all([query1, query2]).then(function (data) {
+        let client = data[0].rows[0];
+        let passes = data[1].rows;
         passes = passes.map(item => {
             item.DateStart = new Date(item.DateStart);
             item.DateStart = `${item.DateStart.getDate()}.${item.DateStart.getMonth()+1}.${item.DateStart.getFullYear()}`
@@ -131,7 +132,7 @@ exports.updateClient = function (request, response) {
     const values = [
         name, surname, cellphone, vk, insta, info, id
     ];
-    pool.query("UPDATE clients SET Name = (?), Surname = (?), Cellphone = (?), VK = (?), Insta = (?), Info = (?) WHERE idClients = (?)", values, function (err, data){
+    pool.query('UPDATE clients SET "Name" = $1, "Surname" = $2, "Cellphone" = $3, "VK" = $4, "Insta" = $5, "Info" = $6 WHERE "idClients" = $7', values, function (err, data){
         if (err) {
             console.log(err);
             response.redirect("back");
@@ -145,40 +146,9 @@ exports.updateClient = function (request, response) {
 exports.deleteClient = function(request, response) {
     if(!request.body) return response.sendStatus(400);
     const id = request.body.id;
-    pool.query("DELETE FROM clients WHERE idClients=?", [id], function(err, data) {
+    pool.query('DELETE FROM clients WHERE idClients=?', [id], function(err, data) {
         if(err) return console.log(err);
         console.log(`Delete idClients ${id} succesful`);
         response.redirect("/clients");
     });
 };
-
-/*
-//Код для "починки" таблицы клиентов после экспорта из OpenOfficeBase
-//Разделяет поле с именем и фамилией на имяя и фамилию по отдельности
-exports.fixTable = function(request, res) {
-    pool.query("SELECT idClients, Name FROM clients", function(err, data) {
-        if(err) return console.log(err);
-        let dataArray = Object.values(JSON.parse(JSON.stringify(data)));
-        console.log(dataArray[0]);
-        dataArray.map(function(item) {
-            item.Surname = item.Name.slice(0, item.Name.indexOf(' '));
-            item.Name = item.Name.substr(item.Name.indexOf(' ')+1);
-        });
-        console.log(dataArray[0]);
-        dataArray.forEach(function(item) {
-            pool.query("UPDATE clients SET Name = (?), Surname = (?) where idClients = (?)", [item.Name, item.Surname, item.idClients], function (err, result) {
-            console.log(result);
-            })
-        })
-        res.redirect("/clients");
-        });
-    });
-};
-*/
-
-/*
-
-//Код для починки адресов страниц VK в клиентах - удаляем пробелы в конце ссылки
-
-
- */
