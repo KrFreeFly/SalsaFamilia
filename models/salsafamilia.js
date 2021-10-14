@@ -65,4 +65,48 @@ const client = sequelize.define('client', {
     timestamps: false,
 });
 
+//моделируем таблицу абонементов
+const pass = sequelize.define('pass', {
+    idPasses: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        unique: true,
+        primaryKey: true,
+    },
+    ID_Clients: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    ID_PassTypes: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    DateStart: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+    },
+    DateEnd: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+    },
+    ClassesLeft: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    Cost: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    WasFrozen: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+    }
+}, {
+    tableName: 'passes',
+    timestamps: false,
+});
+
 module.exports.client = client;
+module.exports.pass = pass;
