@@ -7,7 +7,7 @@ authRouter.get('/login', function (req, res, next) {
     res.render('login');
 });
 
-authRouter.post('login/password', passport.authenticate('local', {
+authRouter.post('/login/password', passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
     failureMessage: true

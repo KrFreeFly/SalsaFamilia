@@ -1,6 +1,6 @@
 //подгружаем драйвер PostgreSQL
 const { Pool } = require('pg');
-const model = require('../boot/salsafamilia.js')
+const model = require('../boot/db.js')
 
 //подгружаем вспомогательные функции
 const functions = require("../public/javascripts/functions.js");

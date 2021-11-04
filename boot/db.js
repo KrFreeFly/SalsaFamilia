@@ -108,5 +108,29 @@ const pass = sequelize.define('pass', {
     timestamps: false,
 });
 
+//моделируем таблицу пользователей
+const user = sequelize.define('user', {
+    idUser: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        unique: true,
+        primaryKey: true,
+    },
+    userName: {
+        type: DataTypes.STRING(45),
+        defaultValue: null,
+    },
+    password: {
+        type: DataTypes.STRING(45),
+        defaultValue: null,
+    }
+}, {
+    tableName: 'users',
+    timestamps: false,
+});
+
+
 module.exports.client = client;
 module.exports.pass = pass;
+module.exports.user = user;

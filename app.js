@@ -7,20 +7,20 @@ const express = require('express'),
     localStrategy = require('passport-local').Strategy,
     flash = require('connect-flash'),
     path = require('path');
+    logger = require('morgan');
 
 const homeRouter = require("./routes/homeRouter"),
+    authRouter = require('./routes/authRouter'),
     clientRouter = require("./routes/clientRouter"),
     passesRouter = require("./routes/passesRouter"),
     passtypesRouter = require("./routes/passtypesRouter"),
     incomeRouter = require("./routes/incomeRouter"),
     expencesRouter = require("./routes/expencesRouter"),
     projectsRouter = require('./routes/projectsRouter'),
-    analyticsRouter = require("./routes/analyticsRouter"),
-    authRouter = require('./routes/authRouter');
+    analyticsRouter = require("./routes/analyticsRouter");
 
-
-//определение пути
-app.use('/static', express.static(path.join(__dirname, 'public')));
+//require('./boot/db')();
+require('./boot/auth')();
 
 //конфигурируем handlebars
 app.engine("hbs", expressHbs(
@@ -33,61 +33,29 @@ app.engine("hbs", expressHbs(
 app.set("view engine", "hbs");
 hbs.registerPartials(__dirname + "/views/partials");
 
-//подключаем express модули
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+//Application-level middleware
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: 'your secret key',
     resave: false,
-    saveUninitialized: true,
-    }))
-app.use(flash())
-app.use(passport.initialize())
-app.use(passport.session())
-
-//авторизация
-passport.use(
-    new localStrategy(
-        {
-            usernameField: 'user',
-            passwordField: 'password',
-        },
-        (user, password, done) => {
-        if (user !== 'tu')
-            return done(null, false, {
-                message: 'User not found',
-            })
-        else if (password !== 'tp')
-            return done(null, false, {
-                message: 'Wrong password',
-            })
-        return done(null, {id: 1, name: 'test', age: 21})
-    })
-)
-
-app.get('/login', (req, res) => {
-    console.log('Flash: ', req.flash('message'));
-    res.render('login');
-})
-
-app.use((req, res, next) => {
-    if (req.user) next()
-    else res.redirect('/login')
-})
-
-app.post('/login',
-    passport.authenticate('local', {
-        failureRedirect: '/login',
-        successRedirect: '/home',
-        failureFlash: true
-    })
-);
-
-app.get('/home', checkAuth(), (req, res) => {
-    res.send("Home page. You're authorized.")
+    saveUninitialized: false,
+    }));
+app.use(function(req, res, next) {
+    const msgs = req.session.messages || [];
+    res.locals.messages = msgs;
+    res.locals.hasMessages = !! msgs.length;
+    req.session.messages = [];
+    next();
 });
+app.use(passport.initialize());
+app.use(passport.authenticate('session'));
 
-//Define routers
+//Define routes
+app.use('/', homeRouter);
+app.use('/', authRouter);
 app.use('/passtypes', passtypesRouter);
 app.use('/income', incomeRouter);
 app.use('/expences', expencesRouter);
@@ -95,16 +63,6 @@ app.use('/projects', projectsRouter);
 app.use('/passes', passesRouter);
 app.use('/clients', clientRouter);
 app.use('/analytics', analyticsRouter);
-app.use('/', authRouter);
-app.use('/', homeRouter);
-
-//авторизация
-function checkAuth() {
-    return app.use((req, res, next) => {
-        if (req.user) next()
-        else res.redirect('/login')
-    })
-}
 
 //слушаем порт
 app.listen(process.env.PORT || 3000, function(){

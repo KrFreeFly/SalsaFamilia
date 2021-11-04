@@ -1,7 +1,10 @@
 const passport = require('passport'),
     Strategy = require('passport-local'),
     crypto = require('crypto'),
-    model = require('../models/salsafamilia.js');
+    model = require('../boot/db.js');
+
+const functions = require("../public/javascripts/functions.js"),
+    transformData = functions.transformData;
 
 module.exports = function() {
 
@@ -11,26 +14,35 @@ module.exports = function() {
     // (`username` and `password`) submitted by the user.  The function must verify
     // that the password is correct and then invoke `cb` with a user object, which
     // will be set at `req.user` in route handlers after authentication.
-    passport.use(new Strategy(function(username, password, cb) {
-        db.get('SELECT rowid AS id, * FROM users WHERE username = ?', [ username ], function(err, row) {
-            if (err) { return cb(err); }
-            if (!row) { return cb(null, false, { message: 'Incorrect username or password.' }); }
-
-            crypto.pbkdf2(password, row.salt, 310000, 32, 'sha256', function(err, hashedPassword) {
-                if (err) { return cb(err); }
-                if (!crypto.timingSafeEqual(row.hashed_password, hashedPassword)) {
-                    return cb(null, false, { message: 'Incorrect username or password.' });
+    passport.use(new Strategy(async function(username, password, cb) {
+        try {
+            let row = await model.user.findAll({
+                where: {
+                    userName: username
                 }
-
-                var user = {
-                    id: row.id.toString(),
-                    username: row.username,
-                    displayName: row.name
-                };
-                return cb(null, user);
             });
-        });
+            row = transformData(row);
+            row = row[0];
+
+            if (!row) {
+                console.log('User not found');
+                return cb(null, false, {message: 'User not found'})
+            }
+            if (+row.password !== password) {
+                console.log('Password incorrect');
+                return cb(null, false, {message: 'Incorrect password'})
+            }
+            console.log('HI');
+            const user = {
+                id: row.idUser,
+                username: row.userName
+            };
+            return cb(null, user);
+        } catch (err) {
+            console.log(err);
+        }
     }));
+
 
 
     // Configure Passport authenticated session persistence.
