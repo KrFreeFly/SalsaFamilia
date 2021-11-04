@@ -4,8 +4,6 @@ const express = require('express'),
     app = express(),
     session = require('express-session'),
     passport = require('passport'),
-    localStrategy = require('passport-local').Strategy,
-    flash = require('connect-flash'),
     path = require('path');
     logger = require('morgan');
 

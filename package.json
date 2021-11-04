@@ -15,8 +15,6 @@
     "sequelize": "^6.6.5"
   },
   "devDependencies": {
-    "connect-flash": "^0.1.1",
-    "express-session": "^1.17.2",
     "nodemon": "^2.0.12"
   },
   "scripts": {
