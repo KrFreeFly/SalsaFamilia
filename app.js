@@ -66,7 +66,7 @@ app.use('/analytics', analyticsRouter);
 
 //слушаем порт
 app.listen(process.env.PORT || 3000, function(){
-    console.log("Сервер ожидает подключения...");
+    console.log("Connection opened");
 });
 
 module.exports = app;
