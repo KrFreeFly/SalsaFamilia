@@ -12,6 +12,12 @@ const sequelize = new Sequelize({
             rejectUnauthorized: false
         }
     },
+    pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+    }
 });
 
 //моделируем таблицу клиентов
@@ -130,7 +136,137 @@ const user = sequelize.define('user', {
     timestamps: false,
 });
 
+//passtypes table model
+const passtype = sequelize.define('passtype', {
+    idPassTypes: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        unique: true,
+        primaryKey: true,
+    },
+    Type: {
+        type: DataTypes.STRING(45),
+        allowNull: false,
+    },
+    Amount: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    Week: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    Cost: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    }
+}, {
+    tableName: 'passtypes',
+    timestamps: false,
+});
+
+// income table model
+const income = sequelize.define('income', {
+    idIncome: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        unique: true,
+        primaryKey: true,
+    },
+    ID_IncomeTypes: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    Date: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+    },
+    Sum: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    Info: {
+        type: DataTypes.STRING(250),
+        allowNull: true,
+    }
+}, {
+    tableName: 'income',
+    timestamps: false,
+});
+
+// income types table model
+const incometype = sequelize.define('incometype', {
+    idIncomeTypes: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        unique: true,
+        primaryKey: true,
+    },
+    Type: {
+        type: DataTypes.STRING(45),
+        allowNull: false,
+    }
+}, {
+    tableName: 'incometypes',
+    timestamps: false,
+});
+
+// expences table model
+const expence = sequelize.define('expence', {
+    idExpences: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        unique: true,
+        primaryKey: true,
+    },
+    ID_ExpencesTypes: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    Date: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+    },
+    Cost: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    Info: {
+        type: DataTypes.STRING(250),
+        allowNull: false,
+    }
+}, {
+    tableName: 'expences',
+    timestamps: false,
+});
+
+// expences types table model
+const expencestype = sequelize.define('expencestype', {
+    idExpencesTypes: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        unique: true,
+        primaryKey: true,
+    },
+    Type: {
+        type: DataTypes.STRING(45),
+        allowNull: false,
+    }
+}, {
+    tableName: 'expencestypes',
+    timestamps: false,
+})
 
 module.exports.client = client;
 module.exports.pass = pass;
 module.exports.user = user;
+module.exports.passtype = passtype;
+module.exports.income = income;
+module.exports.incometype = incometype;
+module.exports.expence = expence;
+module.exports.expencestype = expencestype;
