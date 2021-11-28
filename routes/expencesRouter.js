@@ -4,7 +4,8 @@ const expencesRouter = express.Router();
 
 expencesRouter.use('/types/create', expencesController.createExpencesType);
 expencesRouter.get('/types', expencesController.getExpencesTypes);
+expencesRouter.use('/delete', expencesController.deleteExpence);
 expencesRouter.use('/create', expencesController.createExpence);
-expencesRouter.get("/", expencesController.getExpences);
+expencesRouter.get('/', expencesController.getExpences);
 
 module.exports = expencesRouter;

@@ -1,4 +1,4 @@
-const passport = require('passport'),
+/*const passport = require('passport'),
     Strategy = require('passport-local'),
     crypto = require('crypto'),
     model = require('../boot/db.js');
@@ -14,7 +14,7 @@ module.exports = function() {
     // (`username` and `password`) submitted by the user.  The function must verify
     // that the password is correct and then invoke `cb` with a user object, which
     // will be set at `req.user` in route handlers after authentication.
-    passport.use(new Strategy(async function(username, password, cb) {
+    passport.use('jwt', new Strategy(async function(username, password, cb) {
         try {
             let row = await model.user.findAll({
                 where: {
@@ -64,4 +64,6 @@ module.exports = function() {
         });
     });
 
-};
+}
+
+ */

@@ -10,6 +10,6 @@ passtypesRouter.use("/create", urlencodedParser, passtypesController.createPasst
 passtypesRouter.use("/update", urlencodedParser, passtypesController.updatePasstype);
 passtypesRouter.use("/delete:idPassType", urlencodedParser, passtypesController.deletePasstype);
 passtypesRouter.use("/:idPassType", passtypesController.getPasstype);
-passtypesRouter.use("/", passtypesController.getPasstypes);
+passtypesRouter.get("/", passtypesController.getPasstypes);
 
 module.exports = passtypesRouter;

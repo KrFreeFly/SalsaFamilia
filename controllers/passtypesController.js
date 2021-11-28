@@ -1,31 +1,25 @@
-//подгружаем драйвер mySQL
-const mysql = require("mysql2");
+// loading database model
+const model = require('../boot/db.js')
 
-//подгружаем вспомогательные функции
-const functions = require("../public/javascripts/functions.js");
-const query = functions.query;
+// loading service functions
+const {transformData} = require("../public/javascripts/functions.js");
 
-//создаем пул подключений к базе данных
-const pool = mysql.createPool({
-    connectionLimit: 5,
-    host: "sql11.freemysqlhosting.net",
-    user: "sql11440439",
-    database: "sql11440439",
-    password: "9XLN1AfatB"
-});
-
-exports.getPasstypes = function (request, response) {
-    pool.query("SELECT * FROM passtypes", function (error, data) {
-        if (error) {
-            console.log(error);
-        }
-        response.render("passtypes.hbs", {
-            passtypes: data,
-            title: "Типы абонементов",
+//getting all passtypes
+exports.getPasstypes = async function (req, res) {
+    try {
+        let passtypes = await model.passtype.findAll()
+        passtypes = transformData(passtypes)
+        console.log(`Found ${passtypes.length} passtypes`)
+        res.render('passtypes', {
+            passtypes,
+            title: 'Типы абонементов',
         });
-    });
+    } catch (err) {
+        console.log(err)
+        res.redirect('back')
+    }
 };
-
+///////////////////////////////////////
 exports.newPasstype = function (request, response) {
     let button1 = {
         action : "/passtypes/create",

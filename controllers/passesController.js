@@ -1,72 +1,74 @@
-//подгружаем драйвер mySQL
-const mysql = require('mysql2');
+// loading database model
+const model = require('../boot/db.js')
 
-//подгружаем вспомогательные функции
-const functions = require("../public/javascripts/functions.js");
-const query = functions.query;
+// loading service functions
+const {transformData, transformDate} = require("../public/javascripts/functions.js");
 
-//создаем пул подключений к базе данных
-const pool = mysql.createPool({
-    connectionLimit: 5,
-    host: "sql11.freemysqlhosting.net",
-    user: "sql11440439",
-    database: "sql11440439",
-    password: "9XLN1AfatB"
-});
-
-//вывод списка всех абонементов
-exports.getPasses = function (request, response) {
-    let query1 = query('SELECT * FROM passes');
-    let query2 = query('SELECT idClients, Name, Surname FROM clients');
-    let query3 = query('SELECT idPassType, Type FROM passtypes');
-    Promise.all([query1, query2, query3]).then(function (result) {
-        let passtypes = Array.from(JSON.parse(JSON.stringify(result[2])));
-        let clients = Array.from(JSON.parse(JSON.stringify(result[1])));
-        let passes = Array.from(JSON.parse(JSON.stringify(result[0])));
+//getting all passes
+exports.getPasses = async function (req, res) {
+    try {
+        let passes = await model.pass.findAll()
+        let clients = await model.client.findAll({
+            attributes: ['idClients', 'Name', 'Surname']
+        })
+        let passtypes = await model.passtype.findAll({
+            attributes: ['idPassTypes', 'Type']
+        })
+        passes = transformData(passes)
+        clients = transformData(clients)
+        passtypes = transformData(passtypes)
         passes = passes.map(item => {
-            let idClient = item.ID_Client;
+            let idClient = item.ID_Clients;
             let idPassType = item.ID_PassTypes
             let client = clients.find(item => item.idClients === idClient);
             item.Name = client.Name;
             item.Surname = client.Surname;
-            item.Passtype = passtypes.find(item => item.idPassType === idPassType).Type;
-            item.DateStart = functions.transformDate(item.DateStart);
-            item.DateEnd = functions.transformDate(item.DateEnd);
+            item.Passtype = passtypes.find(item => item.idPassTypes === idPassType).Type;
+            item.DateStart = transformDate(item.DateStart);
+            item.DateEnd = transformDate(item.DateEnd);
             return item;
         });
-        console.log(passes);
-        response.render('passes.hbs', {
+        console.log(`Found ${passes.length} passes`)
+        res.render('passes.hbs', {
             passes,
             title: 'Список абонементов',
         });
-    });
-};
+    } catch (err) {
+        console.log(err)
+        res.redirect('back')
+    }
+}
 
-//вывод формы создания абонемента
-exports.newPass = function (request, response) {
+//create new pass form
+exports.newPass = async function (req, res) {
     let client;
-    if (request.body.id) {
+    if (req.body.id) {
         client = {
-            id: request.body.id,
-            name: request.body.name,
-            surname: request.body.surname,
+            id: req.body.id,
+            name: req.body.name,
+            surname: req.body.surname,
         }
     }
-    const query1 = query("SELECT idClients, Name, Surname FROM clients ORDER BY Surname");
-    const query2 = query('SELECT idPassType, Type FROM passtypes');
-    Promise.all([query1, query2]).then(function (result) {
-        let clients = JSON.parse(JSON.stringify(result[0]));
-        let passtypes = JSON.parse(JSON.stringify(result[1]));
-        console.log(clients, passtypes);
+    try {
+        let clients = await model.client.findAll({
+            attributes: ['idClients', 'Name', 'Surname'],
+            order:[['Surname', 'ASC']]
+        })
+        let passtypes = await model.passtype.findAll({
+            attributes:['idPassTypes', 'Type']
+        })
+        clients = transformData(clients);
+        passtypes=transformData(passtypes);
+        console.log(`Found ${clients.length} clients and ${passtypes.length} passtypes`);
         let button1 = {
-            action : "/passes/create",
-            name : "Создать",
+            action: "/passes/create",
+            name: "Создать",
         };
         let button2 = {
-            action : "javascript:history.go(-1)",
-            name : "Отмена",
+            action: "javascript:history.go(-1)",
+            name: "Отмена",
         }
-        response.render("pass", {
+        res.render("pass", {
             title: 'Создание нового абонемента',
             button1,
             button2,
@@ -74,29 +76,35 @@ exports.newPass = function (request, response) {
             clients,
             client,
         });
-    });
-};
+    } catch (err) {
+        console.log(err)
+        res.redirect('back')
+    }
+}
 
-//отправка данных нового абонемента в базу данных
-exports.createPass = function (request, response) {
-    let idClient = request.body.idClient;
-    let idPassType = request.body.idPassType;
-    let startDate = new Date(request.body.startDate);
-    pool.query("SELECT Amount, Week, Cost FROM passtypes WHERE idPassType = (?)", [idPassType], function (err, result) {
-        if (err) {
-            console.log(err);
-        }
-        result = JSON.parse(JSON.stringify(result[0]))
-        let endDate = new Date();
-        endDate.setDate(startDate.getDate() + 7 * result.Week - 1);
-        pool.query('INSERT INTO passes (ID_Client, ID_PassTypes, DateStart, DateEnd, ClassesLeft, Cost) VALUES (?, ?, ?, ?, ?, ?)', [idClient, idPassType, startDate, endDate, result.Amount, result.Cost], function (err, result) {
-            if (err) {
-                console.log(err);
+//posting new pass to database
+exports.createPass = async function (req, res) {
+    let idClient = req.body.idClient;
+    let idPassType = req.body.idPassType;
+    let startDate = new Date(req.body.startDate);
+    try {
+        let passtypes = await model.passtype.findAll({
+            attributes:['Amount', 'Week', 'Cost'],
+            where: {
+                idPassTypes: idPassType
             }
-            console.log(result);
         })
-    });
-    response.redirect('/passes');
+        passtypes = transformData(passtypes)
+        let endDate = new Date();
+        endDate.setDate(startDate.getDate() + 7 * passtypes.Week - 1);
+        let pass = await model.pass.create({ID_Client: idClient, ID_PassTypes: idPassType, DateStart: startDate, DateEnd: endDate, ClassesLeft: passtypes.Amount, Cost: passtypes.Cost})
+        pass = pass.dataValues
+        console.log(`Pass autogenerated ID: ${pass.idPasses}`)
+        res.redirect(`/passes/${pass.idPasses}`)
+    } catch (err) {
+        console.log(err)
+        res.redirect('/passes/newpass')
+    }
 };
 
 //вывод абонемента по его id
@@ -113,8 +121,8 @@ exports.getPass = function (request, response) {
         Promise.all([query1, query2]).then(function (result) {
             let pass = Array.from(JSON.parse(JSON.stringify(result)));
             console.log(pass);
-            });
         });
+    });
     response.send('Not available');
 };
 

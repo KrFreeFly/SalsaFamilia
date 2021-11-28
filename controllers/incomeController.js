@@ -14,7 +14,7 @@ const pool = mysql.createPool({
     password: "9XLN1AfatB"
 });
 
-exports.getIncome = function (require, response) {
+exports.getIncome = function (request, response) {
     const query1 = query('SELECT * FROM income');
     const query2 = query('SELECT * FROM incometypes');
     Promise.all([query1, query2]).then(function (result) {
