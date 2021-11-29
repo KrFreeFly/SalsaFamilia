@@ -4,15 +4,7 @@ const express = require('express'),
     app = express(),
     logger = require('morgan');
 
-const homeRouter = require("./routes/homeRouter"),
-    authRouter = require('./routes/authRouter'),
-    clientRouter = require("./routes/clientRouter"),
-    passesRouter = require("./routes/passesRouter"),
-    passtypesRouter = require("./routes/passtypesRouter"),
-    incomeRouter = require("./routes/incomeRouter"),
-    expencesRouter = require("./routes/expencesRouter"),
-    projectsRouter = require('./routes/projectsRouter'),
-    analyticsRouter = require("./routes/analyticsRouter");
+const router = require("./routes/mainRouter")
 
 //конфигурируем handlebars
 app.engine("hbs", expressHbs(
@@ -31,15 +23,7 @@ app.use(express.json());
 app.use(express.static('./public'));
 
 //Define routes
-app.use('/', homeRouter);
-app.use('/', authRouter);
-app.use('/passtypes', passtypesRouter);
-app.use('/income', incomeRouter);
-app.use('/expences', expencesRouter);
-app.use('/projects', projectsRouter);
-app.use('/passes', passesRouter);
-app.use('/clients', clientRouter);
-app.use('/analytics', analyticsRouter);
+app.use('/', router);
 
 //слушаем порт
 const port = (process.env.PORT || 3000)
