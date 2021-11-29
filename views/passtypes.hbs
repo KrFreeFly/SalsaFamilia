@@ -1,33 +1,88 @@
 <h1>{{title}}</h1>
 
-<form>
 <table class="table">
-    <tr><th>Тип абонемента</th><th>Количество занятий</th><th>Длительность, недель</th><th>Стоимость</th><th></th></tr>
+    <tr>
+        <th>Тип абонемента</th>
+        <th>Количество занятий</th>
+        <th>Длительность, недель</th>
+        <th>Стоимость</th>
+        <th></th>
+    </tr>
+    <form id="new" method="post">
+        <tr>
+            <td><input type="text" name="type" placeholder="Тип"></td>
+            <td><input type="number" name="amount" placeholder="Количество"></td>
+            <td><input type="number" name="week" placeholder="Длительность"></td>
+            <td><input type="number" name="cost" placeholder="Стоимость"></td>
+            <td>
+                <button formaction="/passtypes" type="submit">Создать</button>
+            </td>
+        </tr>
+    </form>
     {{#each passtypes}}
-        <tr>
-            <td>{{this.Type}}</td>
-            <td>{{this.Amount}}</td>
-            <td>{{this.Week}}</td>
-            <td>{{this.Cost}}</td>
-            <td><button formaction="/passtypes/delete{{this.idPassType}}">Удалить</button><button formaction="/passtypes/{{this.idPassType}}">Редактировать</button></td>
-        </tr>
+        <form method="post">
+            <tr>
+                <td><input id="type_{{this.idPassTypes}}" type="text" value="{{this.Type}}" disabled></td>
+                <td><input id="amount_{{this.idPassTypes}}" type="number" value="{{this.Amount}}" disabled></td>
+                <td><input id="week_{{this.idPassTypes}}" type="number" value="{{this.Week}}" disabled></td>
+                <td><input id="cost_{{this.idPassTypes}}" type="number" value="{{this.Cost}}" disabled></td>
+                <td>
+                    <button id="delete_{{this.idPassTypes}}" name="delete" type="button">Удалить</button>
+                    <button id="change_{{this.idPassTypes}}" name="change" type="button">Редактировать</button>
+                </td>
+            </tr>
+        </form>
     {{/each}}
-        <tr>
-            <td><input id="Type" class="field" placeholder="Тип"></td>
-            <td><input id="Amount" class="field" placeholder="Количество"></td>
-            <td><input id="Week" class="field" placeholder="Длительность"></td>
-            <td><input id="Cost" class="field" placeholder="Стоимость"></td>
-            <td><button formaction="javascript: newType()">Создать</button></td>
-        </tr>
 </table>
-</form>
 
-<script type="text/javascript">
-    function newType() {
-        let type = document.getElementById('Type');
-        let amount = document.getElementById('Amount');
-        let week = document.getElementById('Week');
-        let cost = document.getElementById('Cost');
-        document.location.href = `/passtypes/create?type=${type.value}&amount=${amount.value}&week=${week.value}&cost=${cost.value}`;
-    }
+
+<script>
+    document.addEventListener('click', function (event) {
+        let [action, id] = event.target.id.split('_')
+        let type = document.getElementById(`type_${id}`)
+        let amount = document.getElementById(`amount_${id}`)
+        let week = document.getElementById(`week_${id}`)
+        let cost = document.getElementById(`cost_${id}`)
+        let del = document.getElementById(`delete_${id}`)
+        let change = document.getElementById(`change_${id}`)
+        switch (action) {
+            case 'delete':
+                if (del.name === 'delete') {
+                    if (confirm(`Точно удалить тип абонемента "${type.value}" ?`)) {
+                        fetch(`/passtypes/${id}`, {
+                            method: 'delete'
+                        })
+                    }
+                    document.location.reload()
+                } else {
+                    fetch(`/passtypes/${id}`, {
+                        method: 'put',
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: JSON.stringify({id: id, type: type.value, amount: amount.value, week: week.value, cost: cost.value})
+                    })
+                    document.location.reload()
+                }
+                break
+            case 'change':
+                type.disabled = !type.disabled
+                amount.disabled = !amount.disabled
+                week.disabled = !week.disabled
+                cost.disabled = !cost.disabled
+                if (del.innerText === 'Удалить') {
+                    del.name = 'save'
+                    del.innerText = 'Сохранить'
+                    del.formaction = `/passtypes/update${id}`
+                    change.innerText = 'Отмена'
+                    change.type = 'button'
+                } else {
+                    del.name = 'delete'
+                    del.innerText = 'Удалить'
+                    del.formaction = `/passtypes/delete${id}`
+                    change.innerText = 'Редактировать'
+                    change.type = 'reset'
+                }
+        }
+    })
 </script>
