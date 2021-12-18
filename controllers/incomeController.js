@@ -1,37 +1,31 @@
-//подгружаем драйвер mySQL
-const mysql = require("mysql2");
+// loading database model
+const model = require('../boot/db.js')
 
-//подгружаем вспомогательные функции
-const functions = require("../public/javascripts/functions.js");
-const query = functions.query;
+// loading service functions
+const {transformData, transformDate} = require("../public/javascripts/functions.js");
 
-//создаем пул подключений к базе данных
-const pool = mysql.createPool({
-    connectionLimit: 5,
-    host: "sql11.freemysqlhosting.net",
-    user: "sql11440439",
-    database: "sql11440439",
-    password: "9XLN1AfatB"
-});
-
-exports.getIncome = function (request, response) {
-    const query1 = query('SELECT * FROM income');
-    const query2 = query('SELECT * FROM incometypes');
-    Promise.all([query1, query2]).then(function (result) {
-        let income = JSON.parse(JSON.stringify(result[0]));
-        let types = JSON.parse(JSON.stringify(result[1]));
+//Getting all income
+exports.getIncome = async function (req, res) {
+    try {
+        let income = await model.income.findAll()
+        let incometypes = await model.incometype.findAll({
+            attributes: ['idIncomeTypes', 'Type']
+        })
         income = income.map(item => {
             let idType = item.ID_IncomeTypes;
-            item.Type = types.find(item => item.idIncomeTypes === idType).Type;
-            item.Date = functions.transformDate(item.Date);
+            item.Type = incometypes.find(item => item.idIncomeTypes === idType).Type;
+            item.Date = transformDate(item.Date);
             return item
         });
-        response.render("income", {
-            title: "Доходы",
+        res.render('income', {
+            title: 'Доходы',
             income,
-            types,
-        });
-    });
+            incometypes
+        })
+    } catch (err) {
+        console.log(err)
+        res.redirect('back')
+    }
 };
 
 exports.getIncomeTypes = function (require, response) {

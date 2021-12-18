@@ -1,11 +1,8 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize({
-    username: 'nrixcjoqurpngb',
-    password: '9cbf6cc54df797570cc01fd3f6c178fbb9d4c9789888aa6267d0bcd41ee0b41f',
-    host: 'ec2-52-30-81-192.eu-west-1.compute.amazonaws.com',
-    port: 5432,
-    database: 'd8blcg87f3fr65',
-    dialect: 'postgres',
+require('dotenv').config()
+const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URI
+
+const sequelize = new Sequelize(connectionString, {
     dialectOptions: {
         ssl: {
             require: true,
@@ -19,6 +16,9 @@ const sequelize = new Sequelize({
         idle: 10000
     }
 });
+
+//TODO: add relations to the model
+//TODO: consider replacing some queries inside controllers that fetch related tables with related queries
 
 //моделируем таблицу клиентов
 const client = sequelize.define('client', {
@@ -155,7 +155,9 @@ const passtype = sequelize.define('passtype', {
     },
     Week: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+    },
+    Month: {
+      type: DataTypes.INTEGER,
     },
     Cost: {
         type: DataTypes.INTEGER,
@@ -208,6 +210,10 @@ const incometype = sequelize.define('incometype', {
     Type: {
         type: DataTypes.STRING(45),
         allowNull: false,
+    },
+    Info: {
+        type: DataTypes.STRING(250),
+        allowNull: true
     }
 }, {
     tableName: 'incometypes',
@@ -215,15 +221,15 @@ const incometype = sequelize.define('incometype', {
 });
 
 // expences table model
-const expence = sequelize.define('expence', {
-    idExpences: {
+const expense = sequelize.define('expense', {
+    idExpenses: {
         type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
         unique: true,
         primaryKey: true,
     },
-    ID_ExpencesTypes: {
+    ID_ExpensesTypes: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
@@ -240,13 +246,13 @@ const expence = sequelize.define('expence', {
         allowNull: false,
     }
 }, {
-    tableName: 'expences',
+    tableName: 'expenses',
     timestamps: false,
 });
 
-// expences types table model
-const expencestype = sequelize.define('expencestype', {
-    idExpencesTypes: {
+// expenses types table model
+const expensesType = sequelize.define('expensesType', {
+    idExpensesTypes: {
         type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
@@ -256,17 +262,23 @@ const expencestype = sequelize.define('expencestype', {
     Type: {
         type: DataTypes.STRING(45),
         allowNull: false,
+    },
+    Info: {
+        type: DataTypes.STRING(250),
+        allowNull: true
     }
 }, {
-    tableName: 'expencestypes',
+    tableName: 'expensestypes',
     timestamps: false,
 })
 
-module.exports.client = client;
-module.exports.pass = pass;
-module.exports.user = user;
-module.exports.passtype = passtype;
-module.exports.income = income;
-module.exports.incometype = incometype;
-module.exports.expence = expence;
-module.exports.expencestype = expencestype;
+module.exports = {
+    client,
+    pass,
+    user,
+    passtype,
+    income,
+    incometype,
+    expense,
+    expensesType,
+}

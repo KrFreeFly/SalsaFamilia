@@ -79,7 +79,7 @@ exports.clientsFilter = async function (req, res) {
 };
 
 //возврат карточки клиента по ID
-exports.getClientcard = async function (req, res) {
+exports.getClientCard = async function (req, res) {
     const id = req.params.idClients;
     try {
         let client = await model.client.findAll({

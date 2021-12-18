@@ -2,9 +2,11 @@ const express = require('express'),
     expressHbs = require('express-handlebars'),
     hbs = require('hbs'),
     app = express(),
-    logger = require('morgan');
+    morgan = require('morgan'),
+    authMidWare = require('./middleware/auth'),
+    loginRouter = require('./routes/loginRouter')
 
-const router = require("./routes/mainRouter")
+const mainRouter = require('./routes/mainRouter')
 
 //конфигурируем handlebars
 app.engine("hbs", expressHbs(
@@ -18,17 +20,33 @@ app.set("view engine", "hbs");
 hbs.registerPartials(__dirname + "/views/partials");
 
 //Application-level middleware
-app.use(logger('dev'));
+app.use(morgan('tiny'));
 app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 app.use(express.static('./public'));
 
 //Define routes
-app.use('/', router);
+app.use('/login', loginRouter)
+app.use('/',authMidWare)
+app.use('/', mainRouter);
 
 //слушаем порт
-const port = (process.env.PORT || 3000)
-app.listen(port, ()=>{
-    console.log(`Connection opened on port ${port}`);
-});
+const port = process.env.PORT
+
+let start = ()=> {
+    app.listen(port, ()=>{
+        console.log(`Connection opened on port ${port}`);
+    });
+}
+
+start()
 
 module.exports = app;
+
+//TODO: in all controllers replace try/catch with wrapping function and errorhandler
+
+//TODO: JWT implementation needed ASAP (loginRouter page, etc.)
+
+//TODO: create a route and controller for classes (groups, personal, rented)
+
+//TODO: create a calendar for all classes (table, router, controller, page, etc.)

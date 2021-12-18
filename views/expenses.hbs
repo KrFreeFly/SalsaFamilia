@@ -1,0 +1,59 @@
+<script src="/javascripts/expenses.js"></script>
+<h1>{{title}}</h1>
+<p><a href="/expenses/types"><button>Типы расходов</button></a></p>
+
+<table class="table">
+    <tr>
+        <th>Тип расхода</th>
+        <th>Дата</th>
+        <th>Сумма</th>
+        <th>Комментарий</th>
+        <th></th>
+    </tr>
+    <form id="new" method="post" action="/expenses">
+        <tr>
+            <td>
+                <select id="select" name="type">
+                <option id="plHolderType">Выберите тип</option>
+                {{#each expensesTypes}}
+                    <option value="{{this.idExpensesTypes}}">{{this.Type}}</option>
+                {{/each}}
+                </select><br>
+            </td>
+            <td><input type="date" name="date"></td>
+            <td><input type="number" name="cost"></td>
+            <td><input type="text" name="info" placeholder="Комментарий"></td>
+            <td>
+                <button type="submit">Создать</button>
+            </td>
+        </tr>
+    </form>
+    {{#each expenses}}
+        <form method="post">
+            <tr>
+                <td>
+                    <select id="type_{{this.idExpenses}}" disabled>
+                        <option id="plHolderType" value="{{this.ID_ExpensesTypes}}">{{this.Type}}</option>
+                        {{#each expensesTypes}}
+                            <option value="{{this.idExpensesTypes}}">{{this.Type}}</option>
+                        {{/each}}
+                    </select><br>
+                </td>
+                <td><input id="date_{{this.idExpenses}}" type="date" value="{{this.Date}}" disabled></td>
+                <td><input id="cost_{{this.idExpenses}}" type="number" value="{{this.Cost}}" disabled></td>
+                <td><input id="info_{{this.idExpenses}}" type="text" value="{{this.Info}}" disabled></td>
+                <td>
+                    <button id="delete_{{this.idExpenses}}" name="delete" type="button">Удалить</button>
+                    <button id="change_{{this.idExpenses}}" name="change" type="button">Редактировать</button>
+                </td>
+            </tr>
+        </form>
+    {{/each}}
+</table>
+
+<script>
+    select.onchange = function () {
+        let plHolderType = document.getElementById('plHolderType')
+        plHolderType.hidden = true
+    }
+</script>

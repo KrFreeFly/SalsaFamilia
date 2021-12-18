@@ -1,24 +1,31 @@
+<script src="/javascripts/incometypes.js"></script>
 <h1>{{title}}</h1>
 
-<form>
-    <table class="table">
-        <tr><th>Тип дохода</th><th></th></tr>
-        {{#each types}}
-            <tr>
-                <td>{{this.Type}}</td>
-                <td><button formaction="/income/types/delete{{this.idIncomeTypes}}">Удалить</button><button formaction="/income/types/{{this.idIncomeTypes}}">Редактировать</button></td>
-            </tr>
-        {{/each}}
+<table class="table">
+    <tr>
+        <th>Тип дохода</th>
+        <th>Описание</th>
+        <th></th>
+    </tr>
+    <form id="new" method="post">
         <tr>
-            <td><input id="Type" class="field" placeholder="Тип дохода"></td>
-            <td><button formaction="javascript: newType()">Создать</button></td>
+            <td><input type="text" name="type" placeholder="Тип"></td>
+            <td><input type="text" name="info" placeholder="Описание"></td>
+            <td>
+                <button formaction="/incometypes" type="submit">Создать</button>
+            </td>
         </tr>
-    </table>
-</form>
-
-<script type="text/javascript">
-    function newType() {
-        let type = document.getElementById('Type');
-        document.location.href = `/income/types/create?type=${type.value}`;
-    }
-</script>
+    </form>
+    {{#each incometypes}}
+        <form method="post">
+            <tr>
+                <td><input id="type_{{this.idIncomeTypes}}" type="text" value="{{this.Type}}" disabled></td>
+                <td><input id="info_{{this.idIncomeTypes}}" type="text" value="{{this.Info}}" disabled></td>
+                <td>
+                    <button id="delete_{{this.idIncomeTypes}}" name="delete" type="button">Удалить</button>
+                    <button id="change_{{this.idIncomeTypes}}" name="change" type="button">Редактировать</button>
+                </td>
+            </tr>
+        </form>
+    {{/each}}
+</table>

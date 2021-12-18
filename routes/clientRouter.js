@@ -1,16 +1,13 @@
 const express = require("express");
-const clientController = require("../controllers/clientController.js");
-const clientRouter = express.Router();
+const {getClients, getClientCard, newClient, clientsFilter, createClient, deleteClient, updateClient} = require("../controllers/clientController.js");
+const router = express.Router();
 
-const bodyParser = require("body-parser");
-const urlencodedParser = bodyParser.urlencoded({extended: true});
+router.post("/delete", deleteClient);
+router.get("/clientcard", newClient);
+router.post("/create", createClient);
+router.post("/update", updateClient);
+router.post("/clientsFilter", clientsFilter);
+router.get("/:idClients", getClientCard);
+router.get("/", getClients);
 
-clientRouter.post("/delete", urlencodedParser, clientController.deleteClient);
-clientRouter.get("/clientcard", clientController.newClient);
-clientRouter.post("/create", urlencodedParser, clientController.createClient);
-clientRouter.post("/update", urlencodedParser, clientController.updateClient);
-clientRouter.post("/clientsFilter", urlencodedParser, clientController.clientsFilter);
-clientRouter.get("/:idClients", clientController.getClientcard);
-clientRouter.get("/", clientController.getClients);
-
-module.exports = clientRouter;
+module.exports = router;

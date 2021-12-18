@@ -1,34 +1,34 @@
 document.addEventListener('click', function (event) {
     let [action, id] = event.target.id.split('_')
     let type = document.getElementById(`type_${id}`)
-    let amount = document.getElementById(`amount_${id}`)
-    let week = document.getElementById(`week_${id}`)
+    let date = document.getElementById(`date_${id}`)
     let cost = document.getElementById(`cost_${id}`)
+    let info = document.getElementById(`info_${id}`)
     let del = document.getElementById(`delete_${id}`)
     let change = document.getElementById(`change_${id}`)
     switch (action) {
         case 'delete':
             if (del.name === 'delete') {
-                if (confirm(`Точно удалить тип абонемента "${type.value}" ?`)) {
-                    fetch(`/passtypes/${id}`, {
+                if (confirm(`Точно удалить трату "${info.value}" от "${date.value}" ?`)) {
+                    fetch(`/expenses/${id}`, {
                         method: 'delete'
-                    }).then(document.location.reload())
+                    }).then(document.location.reload()).catch((err) => alert(err))
                 }
             } else {
-                fetch(`/passtypes/${id}`, {
+                fetch(`/expenses/${id}`, {
                     method: 'put',
                     headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
+                        'Content-Type': 'application/json; charset=utf-8'
                     },
-                    body: JSON.stringify({id: id, type: type.value, amount: amount.value, week: week.value, cost: cost.value})
-                }).then(document.location.reload())
+                    body: JSON.stringify({id: id, type: type.value, date: date.value, cost: cost.value, info: info.value})
+                }).then(document.location.reload()).catch((err) => alert(err))
             }
             break
         case 'change':
             type.disabled = !type.disabled
-            amount.disabled = !amount.disabled
-            week.disabled = !week.disabled
+            date.disabled = !date.disabled
             cost.disabled = !cost.disabled
+            info.disabled = !info.disabled
             if (del.innerText === 'Удалить') {
                 del.name = 'save'
                 del.innerText = 'Сохранить'

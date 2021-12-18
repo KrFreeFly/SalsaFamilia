@@ -1,51 +1,42 @@
+<script src="/javascripts/income.js"></script>
 <h1>{{title}}</h1>
-<p><a href="/income/types"><button>Типы доходов</button></a></p>
+<p><a href="/incometypes"><button>Типы доходов</button></a></p>
 
-<form method="post">
-    <table class="table">
-        <tr><th>Тип дохода</th><th>Дата</th><th>Сумма</th><th>Комментарий</th><th></th></tr>
-        {{#each income}}
-            <tr>
-                <td>{{this.Type}}</td>
-                <td>{{this.Date}}</td>
-                <td>{{this.Sum}}</td>
-                <td>{{this.Info}}</td>
-                <td><button formaction="/income/delete{{this.idIncome}}">Удалить</button><button formaction="/income/{{this.idIncome}}">Редактировать</button></td>
-            </tr>
-        {{/each}}
+<table class="table">
+    <tr>
+        <th>Тип дохода</th>
+        <th>Дата</th>
+        <th>Сумма</th>
+        <th>Комментарий</th>
+        <th></th>
+    </tr>
+    <form id="new" method="post">
         <tr>
+            <td><select name="type">
+                {{#each incometypes}}
+                    <option value="{{this.idIncomeTypes}}">{{this.Type}}</option>
+                {{/each}}
+            </select></td>
+            <td><input type="date" name="date" placeholder="Дата"></td>
+            <td><input type="number" name="sum" placeholder="Сумма"></td>
+            <td><input type="text" name="info" placeholder="Комментарий"></td>
             <td>
-                <select id="Type">
-                    <option id="plHolderType">Выберите тип</option>
-                    {{#each types}}
-                        <option value="{{this.idIncomeTypes}}">{{this.Type}}</option>
-                    {{/each}}
-                </select><br><br>
+                <button formaction="/income" type="submit">Создать</button>
             </td>
-            <td><input id="Date" class="field" placeholder="Дата" type="date"></td>
-            <td><input id="Sum" class="field" placeholder="Сумма"></td>
-            <td><input id="Info" class="field" placeholder="Комментарий"></td>
-            <td><button formaction="javascript: newIncome()">Создать</button></td>
         </tr>
-    </table>
-</form>
-
-<script type="text/javascript">
-    function newIncome() {
-        let type = document.getElementById('Type');
-        let date = document.getElementById('Date');
-        let sum = document.getElementById('Sum');
-        let info = document.getElementById('Info');
-        document.location.href = `/income/create?type=${type.value}&date=${date.value}&sum=${sum.value}&info=${info.value}`;
-    }
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function(event) {
-        let selectType = document.getElementById("Type");
-        let optPlHolderType  = document.getElementById("plHolderType");
-        selectType.addEventListener("change", function(changeEvent) {
-            optPlHolderType.hidden = true;
-        });
-    });
-</script>
+    </form>
+    {{#each income}}
+        <form method="post">
+            <tr>
+                <td><input id="type_{{this.idIncome}}" type="text" value="{{this.Type}}" disabled></td>
+                <td><input id="date_{{this.idIncome}}" type="date" value="{{this.Date}}" disabled></td>
+                <td><input id="sum_{{this.idIncome}}" type="number" value="{{this.Sum}}" disabled></td>
+                <td><input id="info_{{this.idIncome}}" type="text" value="{{this.Info}}" disabled></td>
+                <td>
+                    <button id="delete_{{this.idIncome}}" name="delete" type="button">Удалить</button>
+                    <button id="change_{{this.idIncome}}" name="change" type="button">Редактировать</button>
+                </td>
+            </tr>
+        </form>
+    {{/each}}
+</table>

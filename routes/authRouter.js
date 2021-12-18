@@ -3,13 +3,13 @@ const express = require('express'),
 
 const authRouter = express.Router();
 
-authRouter.get('/login', function (req, res, next) {
+authRouter.get('/loginRouter', function (req, res, next) {
     res.render('login');
 });
 
-authRouter.post('/login/password', passport.authenticate('local', {
+authRouter.post('/loginRouter/password', passport.authenticate('local', {
     successRedirect: '/',
-    failureRedirect: '/login',
+    failureRedirect: '/loginRouter',
     failureMessage: true
 }));
 

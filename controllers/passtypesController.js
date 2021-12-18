@@ -45,7 +45,6 @@ exports.updatePasstype = async function (req, res) {
     const amount = req.body.amount;
     const week = req.body.week;
     const cost = req.body.cost;
-    console.log(req)
     try {
         await model.passtype.update({Type: type, Amount: amount, Week: week, Cost: cost}, {
             where: {

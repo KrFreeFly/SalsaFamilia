@@ -15,11 +15,11 @@
     <select id="idPassType" name="idPassType">
         <option id="plHolderPass">Выберите тип абонемента</option>
         {{#each passtypes}}
-            <option value="{{this.idPassType}}">{{this.Type}}</option>
+            <option value="{{this.idPassTypes}}">{{this.Type}}</option>
         {{/each}}
     </select><br><br>
     <label>Дата начала</label><br>
-    <input id="startDate" type="date" name="startDate" class="field" value="{{passtype.Cost}}"/><br><br>
+    <input id="startDate" type="date" name="startDate" class="field"/><br><br>
     <button type="submit" formaction={{button1.action}}>{{button1.name}}</button><button type="submit" formaction={{button2.action}}>{{button2.name}}</button>
 </form>
 

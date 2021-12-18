@@ -1,10 +1,8 @@
 const express = require("express");
-const analyticsController = require("../controllers/analyticsController");
-const analyticsRouter = express.Router();
+const {getAnalytics} = require("../controllers/analyticsController");
+const router = express.Router();
 
-const bodyParser = require("body-parser");
-const urlencodedParser = bodyParser.urlencoded({extended: false});
+router.route("/")
+    .get(getAnalytics);
 
-analyticsRouter.use("/", analyticsController.getAnalytics);
-
-module.exports = analyticsRouter;
+module.exports = router;

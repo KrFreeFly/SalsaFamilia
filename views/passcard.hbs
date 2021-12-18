@@ -1,0 +1,53 @@
+<script src="/javascripts/passcard.js"></script>
+<h1>{{title}}</h1>
+<form id="pass" method="POST" autocomplete="off">
+    <label>Номер абонемента</label><br>
+    <input id="idPass" name="idPass" value="{{pass.idPasses}}" disabled><br><br>
+    <label>Клиент</label><br>
+    <select id="idClient" name="idClient" disabled>
+        <option id="plHolderClient" value="{{pass.ID_Clients}}">{{pass.Surname}} {{pass.Name}}</option>
+        {{#each clients}}
+            <option value="{{this.idClients}}">{{this.Surname}} {{this.Name}}</option>
+        {{/each}}
+    </select><br><br>
+    <label>Тип абонемента</label><br>
+    <select id="idPassType" name="idPassType" disabled>
+        <option id="plHolderPass" value="{{pass.ID_PassTypes}}">{{pass.Type}}</option>
+        {{#each passtypes}}
+            <option value="{{this.idPassTypes}}">{{this.Type}}</option>
+        {{/each}}
+    </select><br><br>
+    <label>Цена приобретения</label><br>
+    <input id="cost" name="cost" type="number" value="{{pass.Cost}}" disabled/><br><br>
+    <label>Дата начала</label><br>
+    <input id="startDate" type="date" name="startDate" class="field" value="{{pass.DateStart}}" disabled/><br><br>
+    <label>Дата окончания</label><br>
+    <input id="endDate" type="date" name="endDate" class="field" value="{{pass.DateEnd}}" disabled/><br><br>
+    <label>Осталось занятий</label><br>
+    <input id="classesLeft" type="number" name="classesLeft" value="{{pass.ClassesLeft}}" disabled/><br><br>
+    <label>Был продлен</label><br>
+    {{#if pass.WasFrozen}}
+        <input type="checkbox" id="wasFrozen" name="wasFrozen" value="wasFrozen" checked disabled/><br><br>
+    {{else}}
+        <input type="checkbox" id="wasFrozen" name="wasFrozen" value="wasFrozen" disabled/><br><br>
+    {{/if}}
+    <button id="change" type="button">Редактировать</button>
+    <button id="del" type="button">Удалить</button>
+    <button type="button" onclick="window.history.go(-1)">Назад</button>
+</form>
+
+<!-- убираем плейсхолдер при выборе чего-то из списка типов абонементов-->
+<script>
+    document.addEventListener('DOMContentLoaded', function (event) {
+        let selectList = document.getElementById("idPassType");
+        let optPlHolderPass = document.getElementById("plHolderPass");
+        selectList.addEventListener("change", function (changeEvent) {
+            optPlHolderPass.hidden = true;
+        });
+        let selectClient = document.getElementById("idClient");
+        let optPlHolderClient = document.getElementById("plHolderClient");
+        selectClient.addEventListener("change", function (changeEvent) {
+            optPlHolderClient.hidden = true;
+        });
+    });
+</script>
