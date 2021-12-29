@@ -1,26 +1,18 @@
 const jwt = require('jsonwebtoken')
 
-
 const authMidWare = async (req,res,next) => {
-    const authHeader = req.headers.authorization
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        res.render('login', {
-            msg: 'Необходима авторизация'
-        })
-        return
-    }
-
+    const token = req.cookies.token;
     try {
-        const token = authHeader.split(' ')[1]
-        const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        const username = decoded.username
-        req.user = username
-    } catch {
-        res.render('login',{
-            msg: 'Авторизация истекла'
-        })
+        if (!token) {
+            res.status(401).send({msg: 'Unauthorized'})
+            return
+        }
+        const decoded = await jwt.verify(token, process.env.JWT_SECRET)
+        req.user = decoded.username
+        next()
+    } catch (err) {
+        res.status(500).send({msg: 'Internal server error'})
     }
-    next()
-}
+};
 
 module.exports = authMidWare

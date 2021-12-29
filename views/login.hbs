@@ -1,9 +1,10 @@
+<script src="javascripts/sendFormData.js"></script>
 <h1>{{title}}</h1>
-<form action="/login/password" method="post">
+<form id="loginForm" action="/login" method="post">
     <p><label>Имя пользователя</label></p>
-    <p><input id="username" name="username" class="field" placeholder="Username"></p>
+    <p><input type="text" id="username" name="username" placeholder="Username"></p>
     <p><label>Пароль</label></p>
-    <p><input id="password" name="password" class="field" placeholder="Password"></p>
+    <p><input type="text" id="password" name="password" placeholder="Password"></p>
     <p><button type="submit">Подтвердить</button></p><br>
-    {{msg}}
 </form>
+{{msg}}

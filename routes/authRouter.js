@@ -1,21 +1,14 @@
-const express = require('express'),
-    passport = require('passport');
+const express = require('express')
+const router = express.Router();
 
-const authRouter = express.Router();
 
-authRouter.get('/loginRouter', function (req, res, next) {
-    res.render('login');
+
+router.post('/loginRouter/password', (req, res) => {
+    res.end
 });
 
-authRouter.post('/loginRouter/password', passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/loginRouter',
-    failureMessage: true
-}));
-
-authRouter.get('/logout', function (req, res, next) {
-    req.logout();
+router.get('/logout', function (req, res) {
     res.redirect('/');
 });
 
-module.exports = authRouter;
+module.exports = router;
