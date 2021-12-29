@@ -47,8 +47,6 @@ module.exports = app;
 
 //TODO: in all controllers replace try/catch with wrapping function and errorhandler
 
-//TODO: JWT implementation needed ASAP (loginRouter page, etc.)
-
 //TODO: create a route and controller for classes (groups, personal, rented)
 
 //TODO: create a calendar for all classes (table, router, controller, page, etc.)

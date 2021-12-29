@@ -47,7 +47,7 @@ exports.createExpense = async function (req, res) {
 
 exports.updateExpense = async function (req, res) {
     const {id, type, date, cost, info} = req.body
-    console.log(date)
+    console.log(req.body)
     try {
         await model.expense.update({Type: type, Date: date, Cost: cost, Info: info}, {
             where: {

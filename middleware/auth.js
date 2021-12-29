@@ -4,7 +4,7 @@ const authMidWare = async (req,res,next) => {
     const token = req.cookies.token;
     try {
         if (!token) {
-            res.status(401).send({msg: 'Unauthorized'})
+            res.status(401).send('<a href="/login">Войти в систему</a>')
             return
         }
         const decoded = await jwt.verify(token, process.env.JWT_SECRET)

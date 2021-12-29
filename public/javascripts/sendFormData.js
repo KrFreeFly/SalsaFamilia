@@ -20,14 +20,19 @@ document.addEventListener('DOMContentLoaded', () => {
             function (e) {
                 e.preventDefault();
                 let formData = new FormData(this);
-                const formMethod = this.method
-                const formAction = this.action
                 formData = Object.fromEntries(formData)
-                const response = send(formData, formMethod, formAction)
+                const formMethod = e.submitter.name
+                const formAction = e.submitter.formAction
+                if (formMethod === 'delete') {
+                    if (!confirm(`Точно удалить запись: ${JSON.stringify(formData)}?`)) {
+                        return
+                    }
+                }
+                send(formData, formMethod, formAction)
                     .then(() => {
+                        document.location.reload()
                     })
                     .catch((err) => console.error(err))
             });
     });
-
 });
