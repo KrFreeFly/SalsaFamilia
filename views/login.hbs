@@ -1,9 +1,13 @@
 <h1>{{title}}</h1>
 <form id="loginForm" action="/login" method="post">
-    <p><label>Имя пользователя</label></p>
+    <p><label for="username">Имя пользователя</label></p>
     <p><input type="text" id="username" name="username" placeholder="Username"></p>
-    <p><label>Пароль</label></p>
+    <p><label for="password">Пароль</label></p>
     <p><input type="text" id="password" name="password" placeholder="Password"></p>
     <p><button type="submit">Подтвердить</button></p><br>
 </form>
 {{msg}}
+
+<script>
+    //TODO: add redirection script to login page. If location /login redirect to main. If different refresh the page
+</script>

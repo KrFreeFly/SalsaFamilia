@@ -1,20 +1,20 @@
 <h1>{{title}}</h1>
 <form id="client" method="POST" autocomplete="off">
-    <input name="id" class="field" value="{{client.idClients}}" hidden="true"/>
+    <input name="id" class="field" value="{{client.id}}" hidden="true"/>
     <label>Фамилия</label><br>
-    <input name="surname" class="field" value="{{client.Surname}}"/><br><br>
+    <input name="surname" class="field" value="{{client.surname}}"/><br><br>
     <label>Имя</label><br>
-    <input name="name" class="field" value="{{client.Name}}" autocomplete="off"/><br><br>
+    <input name="name" class="field" value="{{client.name}}" autocomplete="off"/><br><br>
     <label>Телефон в формате 9991235678</label><br>
-    <input name="cellphone" type="tel" placeholder="(999) 123-56-78"  class="field" value="{{client.Cellphone}}"/><br><br>
+    <input name="cellphone" type="tel" placeholder="(999) 123-56-78"  class="field" value="{{client.cellphone}}"/><br><br>
     <label>ВКонтакте</label><br>
-    <input name="vk" type="tel" class="field" value="{{client.VK}}"/><br><br>
+    <input name="vk" type="tel" class="field" value="{{client.vk}}"/><br><br>
     <label>Инстаграм</label><br>
-    <input name="insta" class="field" value="{{client.Insta}}"/><br><br>
+    <input name="insta" class="field" value="{{client.insta}}"/><br><br>
     <label>Комментарий</label><br>
-    <input name="info" class="field" value="{{client.Info}}"/><br><br>
+    <input name="info" class="field" value="{{client.info}}"/><br><br>
     <label>Дата рождения</label><br>
-    <input type="date" name="birthday" class="field" value="{{client.Birthday}}"/><br><br>
+    <input type="date" name="birthday" class="field" value="{{client.birthday}}"/><br><br>
     <button type="submit" formaction={{button1.action}}>{{button1.name}}</button><button type="submit" formaction={{button2.action}}>{{button2.name}}</button>
 </form><br>
 {{#if showpasses}}
@@ -32,10 +32,10 @@
     </tr>
     {{#each passes}}
     <tr>
-        <td><a href="/passes/{{this.idPasses}}">{{this.idPasses}}</a></td>
-        <td>{{this.DateStart}}</td>
-        <td>{{this.DateEnd}}</td>
-        <td>{{this.ClassesLeft}}</td>
+        <td><a href="/passes/{{this.id}}">{{this.id}}</a></td>
+        <td>{{this.startDate}}</td>
+        <td>{{this.endDate}}</td>
+        <td>{{this.classesLeft}}</td>
     </tr>
     {{/each}}
 </table>

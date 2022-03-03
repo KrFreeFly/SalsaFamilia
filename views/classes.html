@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Title</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="./public/stylesheets/style.css">
+    <link rel="icon" type="image/x-icon" href="./public/favicon.ico"/>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="app">
+        <sidebar></sidebar>
+        <h1>{{ title }}</h1>
+        <p><button @click="getData">Button</button></p>
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>ФИО</th>
+                <th>Телефон</th>
+                <th>VK</th>
+                <th>Insta</th>
+                <th>Info</th>
+                <th>Birthday</th>
+            </tr>
+        </table>
+    </div>
+
+    <script src="../public/javascripts/classes.js"></script>
+
+    <script>
+        const mountedApp = app.mount('#app');
+        import sidebar from "../src/components/sidebar.vue";
+        export default {
+            components: { sidebar }
+        }
+    </script>
+</body>
+</html>

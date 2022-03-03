@@ -11,11 +11,11 @@
     <tr><th>ФИО</th><th>Номер телефона</th><th>VK</th><th>Insta</th><th>Info</th></tr>
     {{#each clients}}
         <tr>
-            <td><a href="/clients/{{this.idClients}}">{{this.Surname}} {{this.Name}}</a></td>
-            <td>{{this.Cellphone}}</td>
-            <td><a href="{{this.VK}}" target="_blank">{{this.VK}}</a></td>
-            <td>{{this.Insta}}</td>
-            <td>{{this.Info}}</td>
+            <td><a href="/clients/{{this.id}}">{{this.surname}} {{this.name}}</a></td>
+            <td>{{this.cellphone}}</td>
+            <td><a href="{{this.vk}}" target="_blank">{{this.vk}}</a></td>
+            <td>{{this.insta}}</td>
+            <td>{{this.info}}</td>
         </tr>
     {{/each}}
 </table>

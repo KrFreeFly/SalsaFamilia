@@ -1,5 +1,10 @@
-const express = require("express");
-const {getExpenseTypes, createExpenseType, deleteExpenseType, updateExpenseType} = require("../controllers/expensesTypesController");
+import express from 'express';
+import {
+    getExpenseTypes,
+    createExpenseType,
+    deleteExpenseType,
+    updateExpenseType
+} from "../controllers/expensesTypesController.js";
 const router = express.Router();
 
 router.route('/')
@@ -10,4 +15,4 @@ router.route('/:idExpensesType')
     .put(updateExpenseType)
     .delete(deleteExpenseType);
 
-module.exports = router;
+export default router;

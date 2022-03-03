@@ -1,27 +1,26 @@
-const express = require("express");
+import express from "express";
+
 const router = express.Router()
 
-const homeRouter = require("../routes/homeRouter.js"),
-    authRouter = require('../routes/authRouter'),
-    clientRouter = require("../routes/clientRouter"),
-    passesRouter = require("../routes/passesRouter"),
-    passtypesRouter = require("../routes/passtypesRouter"),
-    incomeRouter = require("../routes/incomeRouter"),
-    incometypesRouter = require('../routes/incometypesRouter'),
-    expensesRouter = require("./expensesRouter"),
-    projectsRouter = require('../routes/projectsRouter'),
-    analyticsRouter = require("../routes/analyticsRouter");
+import homeRouter from '../routes/homeRouter.js'
+import authRouter from '../routes/authRouter.js'
+import clientRouter from '../routes/clientRouter.js'
+import passesRouter from '../routes/passesRouter.js'
+import passTypesRouter from './passTypesRouter.js'
+import classesRouter from '../routes/classesRouter.js'
+import expensesRouter from './expensesRouter.js'
+import projectsRouter from '../routes/projectsRouter.js'
+import analyticsRouter from '../routes/analyticsRouter.js'
  
 //Define routes
 router.use('/', homeRouter);
-router.use('/', authRouter);
-router.use('/passtypes', passtypesRouter);
-router.use('/incometypes', incometypesRouter);
-router.use('/income', incomeRouter);
+//router.use('/', authRouter);
+router.use('/passtypes', passTypesRouter);
+router.use('/classes', classesRouter);
 router.use('/expenses', expensesRouter);
 router.use('/projects', projectsRouter);
 router.use('/passes', passesRouter);
 router.use('/clients', clientRouter);
 router.use('/analytics', analyticsRouter);
 
-module.exports = router
+export default router

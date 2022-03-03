@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken')
+import jwt from "jsonwebtoken";
 
-const login = async (req, res) => {
+export const login = async (req, res) => {
     const {username, password} = req.body
     if (!username) {
         res.send('Please provide username')
@@ -28,6 +28,4 @@ const login = async (req, res) => {
         res.send('No such user')
     }
 }
-
-module.exports = login
 

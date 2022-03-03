@@ -13,13 +13,13 @@
     </tr>
     {{#each passes}}
         <tr>
-            <td><a href="/passes/{{this.idPasses}}">{{this.idPasses}}</a></td>
-            <td><a href="/clients/{{this.ID_Clients}}">{{this.Surname}} {{this.Name}}</a></td>
-            <td>{{this.Passtype}}</td>
-            <td>{{this.DateStart}}</td>
-            <td>{{this.DateEnd}}</td>
-            <td>{{this.ClassesLeft}}</td>
-            <td>{{this.Cost}}</td>
+            <td><a href="/passes/{{this.id}}">{{this.id}}</a></td>
+            <td><a href="/clients/{{this.clientId}}">{{this.surname}} {{this.name}}</a></td>
+            <td>{{this.passtype}}</td>
+            <td>{{this.startDate}}</td>
+            <td>{{this.endDate}}</td>
+            <td>{{this.classesLeft}}</td>
+            <td>{{this.cost}}</td>
         </tr>
     {{/each}}
 </table>

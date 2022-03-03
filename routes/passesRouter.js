@@ -1,17 +1,25 @@
-const express = require("express");
-const passesController = require("../controllers/passesController.js");
+import express from 'express';
+import {
+    getPasses,
+    createPass,
+    editPass,
+    getPass,
+    newPass,
+    deletePass
+} from '../controllers/passesController.js';
+
 const router = express.Router();
 
 router.route('/')
-    .get(passesController.getPasses)
-    .post(passesController.createPass)
+    .get(getPasses)
+    .post(createPass)
 
 router.route('/newpass')
-    .get(passesController.newPass)
+    .get(newPass)
 
 router.route('/:idPasses')
-    .get(passesController.getPass)
-    .put(passesController.editPass)
-    .delete(passesController.deletePass)
+    .get(getPass)
+    .put(editPass)
+    .delete(deletePass)
 
-module.exports = router;
+export default router;
