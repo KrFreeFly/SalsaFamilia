@@ -1,12 +1,12 @@
 <template>
-    <div class="sidebar">
-      <a href="/">На главную</a><br>
-      <a href="/clients">Клиенты</a><br>
-      <a href="/passes">Абонементы</a><br>
-      <a href="/classes">Занятия</a><br>
-      <a href="/expenses">Расходы</a><br>
-      <a href="/analytics">Аналитика</a><br>
-      <a href="/projects">Проекты</a><br>
+    <div id="sidebar" class="sidebar">
+      <router-link to="/">На главную</router-link>><br>
+      <router-link to="/clients">Клиенты</router-link>><br>
+      <router-link to="/passes">Абонементы</router-link>><br>
+      <router-link to="/classes">Занятия</router-link>><br>
+      <router-link to="/expenses">Расходы</router-link>><br>
+      <router-link to="/analytics">Аналитика</router-link>><br>
+      <router-link to="/projects">Проекты</router-link>><br>
     </div>
 </template>
 <script>

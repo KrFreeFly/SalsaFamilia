@@ -1,4 +1,4 @@
-import { Clients } from '../../../models/index.js'
+import { Clients } from '../models/index.js';
 import { transformData } from "../../../public/javascripts/functions.js";
 
 //POST
@@ -16,7 +16,7 @@ export const getAllClasses = async (req, res) => {
         res.json(clients);
     } catch(err) {
         console.log(err);
-        res.status(500).send('Error ocсured');
+        res.status(500).send('Error occured');
     }
 };
 

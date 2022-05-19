@@ -27,8 +27,12 @@
 
 /* Стилизация страницы content */
 .main {
-    margin-left: 160px; /* То же, что ширина боковой панели */
+    margin-left: 160px;
     padding: 0px 10px;
+}
+
+.centralContent {
+    width: 1000px;
 }
 
 /* Стилизация футера */
@@ -43,10 +47,10 @@
 }
 
 /*стиль таблиц*/
-.table{
+.table {
     border: 1px solid #eee;
-    table-layout: fixed;
-    width: 75%;
+    table-layout: auto;
+    width: 100%;
     margin-bottom: 20px;
 }
 .table th {
@@ -59,6 +63,9 @@
     padding: 5px 10px;
     border: 1px solid #eee;
     text-align: left;
+}
+.table tbody {
+    white-space: nowrap;
 }
 .table tbody tr:nth-child(odd){
     background: #fff;

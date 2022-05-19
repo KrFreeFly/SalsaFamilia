@@ -1,5 +1,6 @@
-import { sequelize } from '../boot/db.js';
-import {Sequelize} from 'sequelize';
+import sequelize from '../boot/db.js';
+import { Sequelize } from 'sequelize';
+import { Clients } from './clients.js';
 
 export const Passes = sequelize.define('pass', {
     id: {
@@ -13,6 +14,10 @@ export const Passes = sequelize.define('pass', {
         field: 'client_id',
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+            model: Clients,
+            key: 'id',
+        }
     },
     passTypeId: {
         field: 'pass_type_id',

@@ -1,8 +1,8 @@
 <template>
-  <div class="home">
+  <div id="home" class="main">
     Hello Home
-    <Sidebar/>
   </div>
+  <Sidebar/>
 </template>
 
 <script>

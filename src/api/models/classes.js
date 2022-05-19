@@ -1,28 +1,28 @@
-const sequelize = require('../boot/db');
-const { Sequelize, DataTypes } = require('sequelize');
+import sequelize from '../boot/db.js';
+import { Sequelize } from 'sequelize';
 
-const Classes = sequelize.define('Classes', {
+export const Classes = sequelize.define('Classes', {
     id: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         unique: true,
         primaryKey: true,
     },
     dateStart: {
-        type: DataTypes.DATE,
+        type: Sequelize.DATE,
         allowNull: false,
     },
     dateEnd: {
-        type: DataTypes.DATE,
+        type: Sequelize.DATE,
         allowNull: false,
     },
     idTeachers: {
-        type: DataTypes.ARRAY(DataTypes.INTEGER),
+        type: Sequelize.ARRAY(Sequelize.INTEGER),
         allowNull: false,
     },
     idPasses: {
-        type: DataTypes.ARRAY(DataTypes.INTEGER),
+        type: Sequelize.ARRAY(Sequelize.INTEGER),
     },
     removedAt: {
         field: 'removed_at',
@@ -44,5 +44,3 @@ const Classes = sequelize.define('Classes', {
     tableName: 'classes',
     timestamps: true,
 });
-
-module.exports = Classes

@@ -18,7 +18,8 @@
     "pg": "^8.7.1",
     "sequelize": "^6.6.5",
     "vue": "^3.2.27",
-    "vue-router": "^3.5.3"
+    "vue-router": "^4.0.13",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@types/sequelize": "^4.28.11",

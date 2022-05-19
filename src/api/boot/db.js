@@ -1,9 +1,8 @@
-import Sequelize from 'sequelize';
-
+import { Sequelize }  from 'sequelize';
 import { config } from "dotenv";
 config()
 
-export const sequelize = new Sequelize(process.env.DATABASE_URL, {
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialectOptions: {
         ssl: {
             require: true,
@@ -17,3 +16,5 @@ export const sequelize = new Sequelize(process.env.DATABASE_URL, {
         idle: 10000
     }
 });
+
+export default sequelize;
