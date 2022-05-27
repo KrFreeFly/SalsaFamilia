@@ -51,7 +51,6 @@
     border: 1px solid #eee;
     table-layout: auto;
     width: 100%;
-    margin-bottom: 20px;
 }
 .table th {
     font-weight: bold;
@@ -72,4 +71,33 @@
 }
 .table tbody tr:nth-child(even){
     background: #F7F7F7;
+}
+
+.clientsTable th:first-child, td:first-child {
+    width: 5%
+}
+
+.clientsTable th:nth-child(2), td:nth-child(2) {
+    width: 25%
+}
+
+.clientsTable th:nth-child(3), td:nth-child(3) {
+    width: 10%
+}
+
+.clientsTable th:nth-child(4), td:nth-child(4) {
+    width: 15%
+}
+
+.clientsTable th:nth-child(5), td:nth-child(5) {
+    width: 22%
+}
+
+.clientsTable th:nth-child(6), td:nth-child(6) {
+    width: 23%
+}
+
+.clickable:hover {
+    background: lightgrey;
+    cursor: pointer;
 }
