@@ -4,14 +4,9 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/dist" />
-      <excludeFolder url="file://$MODULE_DIR$/dist/stylesheets" />
       <excludeFolder url="file://$MODULE_DIR$/node_modules" />
     </content>
-    <content url="file://$MODULE_DIR$/node_modules" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="vue" level="application" />
-    <orderEntry type="library" name="@types/pg" level="application" />
-    <orderEntry type="library" name="@types/jsonwebtoken" level="application" />
   </component>
 </module>

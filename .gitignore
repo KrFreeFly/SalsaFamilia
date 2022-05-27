@@ -1,4 +1,11 @@
-/node_modules/
+# API keys and secrets
 .env
-/dist/
-/.idea/
+
+# Dependency directory
+node_modules
+
+# Editors
+.idea
+
+# Ignore built vue files
+dist
