@@ -2,14 +2,14 @@
   <div class="popup_wrapper" ref="popup_wrapper">
     <div class="popup">
       <div class="popup_header">
-        Popup name
+        <h1>{{ title }}</h1>
       </div>
       <div class="popup_content">
         <slot></slot>
-      </div>
+      </div><br><br>
       <div class="popup_footer">
-        <button class="edit_btn" @click="editEntity">Изменить</button>
-        <button class="close_btn" @click="closePopup">Закрыть</button>
+        <button class="greenButton" @click="saveEntity">{{ greenBtnName }}</button>
+        <button class="redButton" @click="closePopup">{{ redBtnName }}</button>
       </div>
     </div>
   </div>
@@ -17,10 +17,15 @@
 
 <script>
   export default {
-    name: "popup",
+    name: "v-popup",
+    props: {
+      title: '',
+      greenBtnName: '',
+      redBtnName: '',
+    },
     methods: {
-      editEntity() {
-        this.$emit('editEntity')
+      saveEntity() {
+        this.$emit('saveEntity')
       },
       closePopup() {
         this.$emit('closePopup')
@@ -56,6 +61,7 @@
     width: 800px;
     background: white;
     box-shadow: 0 0 17px 0 #e7e7e7;
+    border-radius: 5px;
   }
 
   .popup_header {
@@ -69,16 +75,8 @@
   }
 
   .popup_content {
+    display: flex;
+    justify-content: center;
   }
 
-  .edit_btn {
-    padding: 8px;
-    color: white;
-    background: green;
-  }
-  .close_btn {
-    padding: 8px;
-    color: white;
-    background: red;
-  }
 </style>

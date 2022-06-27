@@ -3,6 +3,7 @@
   <popup
     v-if="popupIsVisible"
     @closePopup="closeClientInfo"
+    @editEntity="editPopup"
   >
     <label for="surname">Фамилия</label><br>
     <input id="surname" v-model="client_data.surname" /><br><br>
@@ -20,26 +21,18 @@
   </popup>
 
     <table class="table clientsTable">
-      <tr>
-        <td>{{client_data.id}}</td>
-        <td @click="showClientInfo" class="clickable">{{client_data.surname}} {{client_data.name}}</td>
-        <td>{{client_data.birthday}}</td>
-        <td>{{client_data.cellphone}}</td>
-        <td><a target="_blank" :href="client_data.vk">{{client_data.vk}}</a></td>
-        <td>{{client_data.insta}}</td>
-      </tr>
+
     </table>
 </template>
 
 <script>
-import popup from './popup';
+import popup from './v-popup';
 
 export default {
   name: 'v-client-row',
   data() {
     return {
       popupIsVisible: false,
-      client_data: {},
     }
   },
   props: {
@@ -61,7 +54,7 @@ export default {
     closeClientInfo () {
       this.popupIsVisible = false;
       this.$emit('popupClosed');
-    }
+    },
   }
 };
 </script>

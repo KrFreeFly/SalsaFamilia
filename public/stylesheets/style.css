@@ -1,4 +1,5 @@
 /* Боковое меню */
+
 .sidebar {
     height: 100%; /* Полная высота: удалите это, если хотите "auto" высоту */
     width: 160px; /* Установите ширину боковой панели */
@@ -28,6 +29,7 @@
 /* Стилизация страницы content */
 .main {
     margin-left: 160px;
+    margin-top: 50px;
     padding: 0px 10px;
 }
 
@@ -46,7 +48,7 @@
     color: white;
 }
 
-/*стиль таблиц*/
+/* Cтиль таблиц */
 .table {
     border: 1px solid #eee;
     table-layout: auto;
@@ -100,4 +102,63 @@
 .clickable:hover {
     background: lightgrey;
     cursor: pointer;
+}
+
+/* Стиль хедера */
+
+.v_header {
+    height: 50px; /* Полная высота: удалите это, если хотите "auto" высоту */
+    width: 100%;
+    margin-left: 160px; /* Установите ширину боковой панели */
+    position: fixed; /* Исправлена боковая панель (оставайтесь на месте при прокрутке) */
+    z-index: 1; /* Оставайтесь вверху */
+    top: 0; /* Оставайтесь внизу */
+    left: 0;
+    background-color: #111; /* Черный */
+    overflow-x: hidden; /* Отключить горизонтальную прокрутку */
+    vertical-align: middle;
+    display:table-cell;
+}
+
+.v_header_toolbar {
+    width: 1000px;
+    align-content: center;
+    padding-left: 25px;
+    padding-top: 5px;
+    height: 40px;
+}
+
+/* Стили кнопок */
+
+.greenButton {
+    background: #255125;
+    color: white;
+    width: 150px;
+    height: 40px;
+    font-size: 20px;
+    border-color: grey;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.greyButton {
+    background: darkgrey;
+    color: white;
+    width: 150px;
+    height: 40px;
+    font-size: 20px;
+    border-color: grey;
+    border-radius: 5px;
+    margin-left: 10px
+}
+
+.redButton {
+    background: red;
+    color: white;
+    width: 150px;
+    height: 40px;
+    font-size: 20px;
+    border-color: grey;
+    border-radius: 5px;
+    margin-left: 10px
 }

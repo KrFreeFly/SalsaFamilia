@@ -1,19 +1,31 @@
 import { Clients } from './clients.js';
+import { PassTypes } from './passTypes.js';
 import { Passes } from './passes.js';
 import { Classes } from './classes.js';
-import {Teachers} from './teachers.js';
+import { Teachers } from './teachers.js';
 import { ClassesClients } from './classesClients.js';
-import {ClassesTeachers} from './classesTeachers.js';
-import {ExpensesTypes} from "./expensesTypes.js";
+import { ClassesTeachers } from './classesTeachers.js';
+import { ExpensesTypes } from './expensesTypes.js';
 
-Passes.belongsTo(Clients);
-Clients.hasMany(Passes, { foreignKey: 'clientId' });
+Passes.belongsTo(Clients, { foreignKey: 'client_id' });
+Clients.hasMany(Passes, { foreignKey: 'client_id' });
+
+PassTypes.hasMany(Passes, { foreignKey: 'pass_type_id' });
+Passes.belongsTo(PassTypes, { foreignKey: 'pass_type_id' });
 
 Clients.belongsToMany(Classes, { as: 'classes', through: ClassesClients, foreignKey: 'clientId' });
 Classes.belongsToMany(Clients, { as: 'clients', through: ClassesClients, foreignKey: 'classId' });
 
-Teachers.belongsToMany(Classes, { as: 'classes', through: ClassesTeachers, foreignKey: 'teacherId' });
-Classes.belongsToMany(Teachers, { as: 'teachers', through: ClassesTeachers, foreignKey: 'classId' });
+Teachers.belongsToMany(Classes, {
+  as: 'classes',
+  through: ClassesTeachers,
+  foreignKey: 'teacherId',
+});
+Classes.belongsToMany(Teachers, {
+  as: 'teachers',
+  through: ClassesTeachers,
+  foreignKey: 'classId',
+});
 
 Clients.hasMany(ClassesClients, { foreignKey: 'clientId' });
 ClassesClients.belongsTo(Clients);
@@ -46,37 +58,7 @@ ClassesTeachers.belongsTo(Teachers);
 //     timestamps: false,
 // });
 //
-// //passtypes table model
-// export const PassTypes = sequelize.define('passtype', {
-//     idPassTypes: {
-//         type: Sequelize.INTEGER,
-//         allowNull: false,
-//         autoIncrement: true,
-//         unique: true,
-//         primaryKey: true,
-//     },
-//     Type: {
-//         type: Sequelize.STRING(45),
-//         allowNull: false,
-//     },
-//     Amount: {
-//         type: Sequelize.INTEGER,
-//         allowNull: false,
-//     },
-//     Week: {
-//         type: Sequelize.INTEGER,
-//     },
-//     Month: {
-//       type: Sequelize.INTEGER,
-//     },
-//     Cost: {
-//         type: Sequelize.INTEGER,
-//         allowNull: false,
-//     }
-// }, {
-//     tableName: 'passtypes',
-//     timestamps: false,
-// });
+
 //
 // // income table model
 // export const income = sequelize.define('income', {
@@ -162,13 +144,13 @@ ClassesTeachers.belongsTo(Teachers);
 //
 // // expenses types table model
 
-
 export {
-    Clients,
-    Passes,
-    Classes,
-    ClassesTeachers,
-    ClassesClients,
-    Teachers,
-    ExpensesTypes,
-}
+  Clients,
+  Passes,
+  Classes,
+  ClassesTeachers,
+  ClassesClients,
+  Teachers,
+  ExpensesTypes,
+  PassTypes,
+};
